@@ -16,6 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import com.spr.jetpack_loading.enums.LinearAnimationType
+import com.spr.jetpack_loading.extension.toRadians
 import kotlinx.coroutines.delay
 import kotlin.math.cos
 import kotlin.math.sin
@@ -85,12 +86,12 @@ fun LineSpinFadeLoaderIndicator(
             val angle = index * angleStep
 
             val startX =
-                center.x + innerRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
+                center.x + innerRadius * cos(angle.toDouble().toRadians()).toFloat()
             val startY =
-                center.y + innerRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
+                center.y + innerRadius * sin(angle.toDouble().toRadians()).toFloat()
 
-            val endX = center.x + outerRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
-            val endY = center.y + outerRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
+            val endX = center.x + outerRadius * cos(angle.toDouble().toRadians()).toFloat()
+            val endY = center.y + outerRadius * sin(angle.toDouble().toRadians()).toFloat()
 
             drawLine(
                 color = color,

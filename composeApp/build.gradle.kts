@@ -61,6 +61,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            // from mavenLocal
+            implementation("com.github.MahboubehSeyedpour:jetpack-loading:0.1.1.2-SNAPSHORT")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

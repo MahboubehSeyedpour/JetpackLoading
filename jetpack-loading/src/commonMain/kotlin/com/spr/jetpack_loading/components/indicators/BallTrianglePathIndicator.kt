@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import com.spr.jetpack_loading.extension.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -59,8 +60,8 @@ fun BallTrianglePathIndicator(
                 radius = diameter / 2,
                 style = Stroke(width = 6f),
                 center = Offset(
-                    x = center.x + ((spacingAnimation) * cos(Math.toRadians((angle) + rotation.toDouble())).toFloat()),
-                    y = center.y + ((spacingAnimation) * sin(Math.toRadians((angle) + rotation.toDouble())).toFloat()),
+                    x = center.x + ((spacingAnimation) * cos((angle) + rotation.toDouble()).toRadians().toFloat()),
+                    y = center.y + ((spacingAnimation) * sin((angle) + rotation.toDouble()).toRadians().toFloat()),
                 )
             )
         }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import com.spr.jetpack_loading.enums.LinearAnimationType
+import com.spr.jetpack_loading.extension.toRadians
 import kotlinx.coroutines.delay
 import kotlin.math.cos
 import kotlin.math.sin
@@ -75,8 +76,9 @@ fun BallSpinFadeLoaderIndicator(
         val center = Offset(size.width / 2, size.height / 2)
         for (index in 0 until ballCount) {
             val angle = index * angleStep
-            val x = center.x + radius * cos(Math.toRadians(angle.toDouble())).toFloat()
-            val y = center.y + radius * sin(Math.toRadians(angle.toDouble())).toFloat()
+            val x = center.x + radius * cos(angle.toDouble().toRadians().toFloat())
+            val y = center.y + radius * sin(angle.toDouble().toRadians().toFloat())
+
             drawCircle(
                 color = color,
                 radius = ballRadius * animationValues[index], // Apply the scale

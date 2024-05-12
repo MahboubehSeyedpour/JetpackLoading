@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.spr.jetpack_loading.extension.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -78,8 +79,8 @@ fun BallRotateIndicator(
                 color = color,
                 radius = diameter / 2 * scale,
                 center = Offset(
-                    x = center.x + ((spacing) * cos(Math.toRadians((angle) + rotation.toDouble())).toFloat()),
-                    y = center.y + ((spacing) * sin(Math.toRadians((angle) + rotation.toDouble())).toFloat()),
+                    x = center.x + ((spacing) * cos((angle) + rotation.toDouble()).toRadians().toFloat()),
+                    y = center.y + ((spacing) * sin((angle) + rotation.toDouble()).toRadians().toFloat()),
                 )
             )
         }
