@@ -1,63 +1,78 @@
-import io.grpc.internal.SharedResourceHolder.release
-import org.jetbrains.kotlin.config.JvmAnalysisFlags.useIR
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
+}
+
+kotlin {
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "jetpack-loading"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "jetpack-loading.js"
+            }
+        }
+
+        nodejs()
+        binaries.executable()
+    }
+
+    js(IR) {
+        moduleName = "jetpack-loading"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "jetpack-loading.js"
+            }
+        }
+
+        nodejs()
+        binaries.executable()
+    }
+
+    jvm("desktop")
+
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+    
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "jetpack-loading"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+        }
+    }
 }
 
 android {
-    namespace = "com.example.jetpack_loading"
-    compileSdk = 33
-
+    namespace = "com.spr.jetpack_loading"
+    compileSdk = 34
     defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+        minSdk = 26
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
-    }
-    buildFeatures {
-        compose = true
-    }
-}
-
-dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    implementation("androidx.compose.material3:material3")
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            register<MavenPublication>("release") {
-                from(components["release"])
-
-                groupId = "com.github.MahboubehSeyedpour"
-                artifactId = "jetpack-loading"
-                version = "0.1.0"
-            }
-        }
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
