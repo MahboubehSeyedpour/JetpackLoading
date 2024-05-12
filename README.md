@@ -19,11 +19,11 @@ Indicators #1                                                                |  
 - #### Step 1
   Add it in settings.gradle:
 
-  ```bash
+  ```kotlin
   allprojects {
     repositories {
       ...
-      maven { url 'https://jitpack.io' }
+      maven("https://s01.oss.sonatype.org")
     }
   }
   
@@ -31,15 +31,15 @@ Indicators #1                                                                |  
 - #### Step 2
   Add the dependency
 
-  ```bash
+  ```kotlin
   commonMain.dependencies {
-	implementation 'com.github.MahboubehSeyedpour:jetpack-loading:1.1.0'
+	  implementation('com.github.MahboubehSeyedpour:jetpack-loading:$version')
   }
   
    
 - #### Step 3
   It's very simple to use. Just add component where you want
-  ```bash
+  ```kotlin
    @Composable
    fun Greeting() {
        ...
@@ -49,7 +49,7 @@ Indicators #1                                                                |  
   ```
 
   You can also control the details of the animations using parameters
-  ```bash
+  ```kotlin
    @Composable
    fun Greeting() {
        ...
