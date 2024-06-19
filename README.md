@@ -14,33 +14,32 @@ Indicators #1                                                                |  
 <img src="screenshots/screenshot.gif" alt="GIF 1" width="300" height="600">  |  <img src="screenshots/screenshot_1.gif" alt="GIF 1" width="300" height="600">
 
 
-
 ## Usage
 
 - #### Step 1
   Add it in settings.gradle:
-  
-  ```bash
+
+  ```kotlin
   allprojects {
     repositories {
       ...
-      maven { url 'https://jitpack.io' }
+      maven("https://s01.oss.sonatype.org")
     }
   }
   
    
 - #### Step 2
   Add the dependency
-  
-  ```bash
-  dependencies {
-	implementation 'com.github.MahboubehSeyedpour:jetpack-loading:1.1.0'
+
+  ```kotlin
+  commonMain.dependencies {
+	  implementation('com.github.MahboubehSeyedpour:jetpack-loading:$version')
   }
   
    
-- #### Step 3  
+- #### Step 3
   It's very simple to use. Just add component where you want
-  ```bash
+  ```kotlin
    @Composable
    fun Greeting() {
        ...
@@ -48,9 +47,9 @@ Indicators #1                                                                |  
        ...
    }
   ```
-  
+
   You can also control the details of the animations using parameters
-  ```bash
+  ```kotlin
    @Composable
    fun Greeting() {
        ...
@@ -60,66 +59,66 @@ Indicators #1                                                                |  
   ```
 
 Enjoy JetpackLoading 😊
-  
+
 ##  Indicators
 
 The indicators are as follows:
 
 1. Indicators #1
-   
-	Row 1
- 	- `PulsatingDot`
- 	- `GridPulsatingDot`
- 	- `CircularPulsatingIndicator`
- 	- `BallClipRotatePulseIndicator`
 
- 	Row 2
- 	- `SquareSpinIndicator`
- 	- `BallClipRotateMultipleIndicator`
- 	- `BallPulseRiseIndicator`
- 	- `BallRotateIndicator`
+   Row 1
+  - `PulsatingDot`
+  - `GridPulsatingDot`
+  - `CircularPulsatingIndicator`
+  - `BallClipRotatePulseIndicator`
 
-  	Row 3
- 	- `CubeTransitionIndicator`
- 	- `BallZigZagIndicator`
- 	- `BallZigZagDeflectIndicator`
- 	- `BallTrianglePathIndicator`
+   Row 2
+  - `SquareSpinIndicator`
+  - `BallClipRotateMultipleIndicator`
+  - `BallPulseRiseIndicator`
+  - `BallRotateIndicator`
 
-	Row 4
-	- `BallScaleIndicator`
- 	- `LineScaleIndicator`
- 	- `LineScaleIndicator`
- 	- `BallScaleMultipleIndicator`
+   Row 3
+  - `CubeTransitionIndicator`
+  - `BallZigZagIndicator`
+  - `BallZigZagDeflectIndicator`
+  - `BallTrianglePathIndicator`
 
-	Row 5
- 	- `BallPulseSyncIndicator`
- 	- `BallBeatIndicator`
- 	- `LineScaleIndicator`
- 	- `LineScaleIndicator`
+   Row 4
+  - `BallScaleIndicator`
+  - `LineScaleIndicator`
+  - `LineScaleIndicator`
+  - `BallScaleMultipleIndicator`
 
- 	Row 6
- 	- `BallScaleRippleIndicator`
- 	- `BallScaleRippleMultipleIndicator`
- 	- `BallSpinFadeLoaderIndicator`
- 	- `LineSpinFadeLoaderIndicator`
+   Row 5
+  - `BallPulseSyncIndicator`
+  - `BallBeatIndicator`
+  - `LineScaleIndicator`
+  - `LineScaleIndicator`
 
-  	Row 7
- 	- `TriangleSpinIndicator`
- 	- `PacmanIndicator`
- 	- `BallGridBeatIndicator`
- 	- `SemiCircleSpinIndicator`
+   Row 6
+  - `BallScaleRippleIndicator`
+  - `BallScaleRippleMultipleIndicator`
+  - `BallSpinFadeLoaderIndicator`
+  - `LineSpinFadeLoaderIndicator`
+
+   Row 7
+  - `TriangleSpinIndicator`
+  - `PacmanIndicator`
+  - `BallGridBeatIndicator`
+  - `SemiCircleSpinIndicator`
 
 
 2. Indicators #2
-   
-	Row 1
- 	- `GridFadeDiagonal`
- 	- `GridFadeAntiDiagonal`
- 	- `BallRespectivelyExitIndicator`
- 	- `TriangleShapeIndicator`
 
- 	Row 2
- 	- `CircleShapeIndicator`
+   Row 1
+  - `GridFadeDiagonal`
+  - `GridFadeAntiDiagonal`
+  - `BallRespectivelyExitIndicator`
+  - `TriangleShapeIndicator`
+
+   Row 2
+  - `CircleShapeIndicator`
 
 
 ## 🔗 Contact

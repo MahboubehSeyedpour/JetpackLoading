@@ -1,63 +1,138 @@
-import io.grpc.internal.SharedResourceHolder.release
-import org.jetbrains.kotlin.config.JvmAnalysisFlags.useIR
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
+
     id("maven-publish")
+    id("signing")
+}
+
+kotlin {
+    val webConfig : KotlinJsTargetDsl.() -> Unit = {
+        moduleName = "jetpack-loading"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "jetpack-loading.js"
+            }
+        }
+
+        nodejs()
+        binaries.executable()
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs(webConfig)
+
+    js(IR,webConfig)
+
+    jvm("desktop")
+
+    androidTarget {
+        publishLibraryVariants("release", "debug")
+
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+    
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "jetpack-loading"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+        }
+    }
 }
 
 android {
-    namespace = "com.example.jetpack_loading"
-    compileSdk = 33
-
+    namespace = "com.spr.jetpack_loading"
+    compileSdk = 34
     defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+        minSdk = 26
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
-    }
-    buildFeatures {
-        compose = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
-dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    implementation("androidx.compose.material3:material3")
-}
 
-afterEvaluate {
-    publishing {
-        publications {
-            register<MavenPublication>("release") {
-                from(components["release"])
+// Based on https://medium.com/kodein-koders/publish-a-kotlin-multiplatform-library-on-maven-central-6e8a394b7030
+publishing {
+    publications {
+        repositories {
+            maven {
+                name="oss"
 
+                val repositoryId = System.getenv("SONATYPE_REPOSITORY_ID")
+                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId/")
+                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
+                url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+
+                credentials {
+                    username = System.getenv("SONATYPE_USERNAME")
+                    password = System.getenv("SONATYPE_PASSWORD")
+                }
+            }
+
+            mavenLocal()
+        }
+
+        withType<MavenPublication> {
+            pom {
                 groupId = "com.github.MahboubehSeyedpour"
-                artifactId = "jetpack-loading"
-                version = "0.1.0"
+                version = "0.1.1.2-SNAPSHORT"
+
+                name.set("jetpack-loading")
+                description.set("Elegant Android loading indicator using Jetpack Compose")
+
+                licenses {
+                    name.set("Apache License Version 2.0")
+                }
+
+                url.set("https://github.com/MahboubehSeyedpour/jetpack-loading")
+
+                issueManagement {
+                    system.set("Github")
+                    url.set("https://github.com/MahboubehSeyedpour/jetpack-loading/issues")
+                }
+
+                scm {
+                    connection.set("https://github.com/MahboubehSeyedpour/jetpack-loading.git")
+                    url.set("https://github.com/MahboubehSeyedpour/jetpack-loading")
+                }
             }
         }
     }
 }
+
+// TODO : Enable this again when publishing to mavenCentral
+/*
+signing {
+    useInMemoryPgpKeys(
+        System.getenv("GPG_PRIVATE_KEY"),
+        System.getenv("GPG_PRIVATE_PASSWORD")
+    )
+
+    sign(publishing.publications)
+}*/
